@@ -78,6 +78,7 @@ function App() {
           &nbsp;
           <span>
             <label><input type="radio" onChange={e => e.target.checked && setParsingMode('line')} checked={parsingMode === 'line'} /> Line</label>
+            &nbsp;
             <label><input type="radio" onChange={e => e.target.checked && setParsingMode('full')} checked={parsingMode === 'full'} /> Full</label>
           </span>
           <textarea id="inputJson" onChange={e => setJson(e.target.value)} value={json} />
