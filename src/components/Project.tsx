@@ -97,7 +97,7 @@ function Project() {
                         minHeight={150}
                         style={{
                             fontSize: 12,
-                            backgroundColor: "#f5f5f5",
+                            // backgroundColor: "#f5f5f5",
                             fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
                         }}
                     />
@@ -120,7 +120,8 @@ function Project() {
                         <h4>{result.name}</h4>
                         <p>{result.message}</p>
                         {/* <pre>{result.stack}</pre> */}
-                    </div> : <pre className='form-control'>{result === undefined ? '[UNDEFINED]' : JSON.stringify(result, undefined, 4)}</pre>}
+                    </div> : <pre className='form-control'
+                        style={{ height: 'auto' }}>{result === undefined ? '[UNDEFINED]' : JSON.stringify(result, undefined, 4)}</pre>}
                 </div>
             </div>
             <div className="form-group">
@@ -128,7 +129,7 @@ function Project() {
                 &nbsp;
                 <label><input id="autoExecuteCheckbox" type="checkbox" checked={autoExecute} onChange={e => setAutoExecute(e.target.checked)} /> Auto Execure</label>
             </div>
-        </section >
+        </section>
     );
 }
 
