@@ -1,4 +1,4 @@
-import csvParser from "csv-parser";
+//import csvParser from "csv-parser";
 
 function tryParseJson(json: string) {
     try {
