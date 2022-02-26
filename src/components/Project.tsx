@@ -5,8 +5,9 @@ import Button from 'react-bootstrap/Button';
 import ExecutorApi from '../executor-api';
 import { defaultParser as DefaultParser, Parser, parsers } from '../parser';
 import { examples } from '../examples';
-import { ButtonGroup } from 'react-bootstrap';
+import { Alert, ButtonGroup } from 'react-bootstrap';
 import CodeEditor from '@uiw/react-textarea-code-editor';
+import { JsonVisualizer, ErrorVisualizer } from './Visualizer';
 
 function Project() {
     const [code, setCode] = useState(examples[0].code);
@@ -17,7 +18,10 @@ function Project() {
     const [autoExecute, setAutoExecute] = useState(true);
     const processor = useMemo(() => {
         try {
-            return Function('data', 'log', 'out', code);
+            const func = Function('data', 'log', 'out', code);
+            
+            console.log(func);
+            return func;
         } catch (error) {
             return () => error;
         }
@@ -77,7 +81,7 @@ function Project() {
                 <Button size='sm' onClick={() => setTextData('')} active={!!textData}>Clear</Button>
                 {textData.length < 1_000_000
                     ? <textarea id="inputText" className='form-control' onChange={e => setTextData(e.target.value)} value={textData} />
-                    : <span className='form-control'>Text is too large</span>}
+                    : <Alert variant='warning'>Text is too large</Alert>}
             </div>
             <div className="form-group">
                 <label htmlFor="inputCode">Code</label>
@@ -104,7 +108,7 @@ function Project() {
                 </div>
                 <div id="codeHelp" className="form-text text-muted">
                     <ul>
-                        <li><code>data</code> Parsed json</li>
+                        <li><code>data</code> Input data</li>
                         <li><code>log</code> Equivalent of console.log</li>
                     </ul>
                 </div>
@@ -116,12 +120,9 @@ function Project() {
                     <Button>Returned</Button>
                 </ButtonGroup>
                 <div>
-                    {result instanceof Error ? <div>
-                        <h4>{result.name}</h4>
-                        <p>{result.message}</p>
-                        {/* <pre>{result.stack}</pre> */}
-                    </div> : <pre className='form-control'
-                        style={{ height: 'auto' }}>{result === undefined ? '[UNDEFINED]' : JSON.stringify(result, undefined, 4)}</pre>}
+                    {result instanceof Error
+                        ? <ErrorVisualizer error={result} func={processor} />
+                        : <JsonVisualizer data={result} />}
                 </div>
             </div>
             <div className="form-group">

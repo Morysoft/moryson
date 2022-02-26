@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, Container, Nav, Navbar, NavDropdown, Tab, Tabs } from 'react-bootstrap';
+/* eslint-disable no-script-url */
+import { useState } from 'react';
+import { Container, Nav, Navbar, Tab, Tabs } from 'react-bootstrap';
 import './App.scss';
 import Project from './components/Project';
 
