@@ -6,7 +6,7 @@ import ExecutorApi from '../executor-api';
 import { defaultParser as DefaultParser, Parser, parsers } from '../parser';
 import { examples } from '../examples';
 import { Alert, ButtonGroup } from 'react-bootstrap';
-import { JsonVisualizer, ErrorVisualizer } from './Visualizer';
+import { JsonVisualizer, ErrorVisualizer, DataVisualizer } from './Visualizer';
 import jslinq from 'jslinq';
 
 function Project() {
@@ -89,9 +89,10 @@ function Project() {
                 <ButtonGroup size="sm">
                     <Button>JavaScript</Button>
                 </ButtonGroup>
+                <textarea id="inputCode" value={code} onChange={e => setCode(e.target.value)}></textarea>
             </div>
             <div className="">
-                <label htmlFor="inputCode">Output</label>
+                <label>Output</label>
                 &nbsp;
                 <ButtonGroup size="sm">
                     <Button>Returned</Button>
@@ -99,7 +100,7 @@ function Project() {
                 <div>
                     {result instanceof Error
                         ? <ErrorVisualizer error={result} func={processor} />
-                        : <JsonVisualizer data={result} />}
+                        : <DataVisualizer data={result} />}
                 </div>
             </div>
             <div className="form-group">

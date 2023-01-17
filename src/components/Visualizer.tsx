@@ -1,5 +1,6 @@
 import CodeEditor from '@uiw/react-textarea-code-editor';
-import { Alert } from 'react-bootstrap';
+import { useState } from 'react';
+import { Alert, Button, ButtonGroup } from 'react-bootstrap';
 
 interface EvalErrorStack {
     func: string;
@@ -67,4 +68,57 @@ export function JsonVisualizer({ data, limit = 1_000_000 }: { data: any, limit?:
             ? <Alert variant='warning'>JSON is too large</Alert>
             : <pre className='form-control' style={{ height: 'auto' }}>{json}</pre>}
     </div>;
+}
+
+export function TableVisualizer({ data, limit = 100_000 }: { data: any, limit?: number }) {
+    if (!data) {
+        return <Alert variant='warning'>[UNDEFINED]</Alert>;
+    }
+
+    if (!Array.isArray(data)) {
+        data = [data];
+    }
+
+    if (data.length === 0) {
+        return <Alert variant='warning'>[EMPTY]</Alert>;
+    }
+
+    const columns = Object.keys(data[0]);
+
+    const table: any[] = data || [];
+
+    return <table>
+        <thead>
+            <tr>
+                {columns.map(c => <th key={c}>{c}</th>)}
+            </tr>
+        </thead>
+        <tbody>
+            {table.map((row, j) => <tr key={j}>
+                {columns.map(c => <td key={c}>{row[c]}</td>)}
+            </tr>)}
+        </tbody>
+    </table>;
+}
+
+export function DataVisualizer({ data }: { data: any }) {
+    const [visualizer, setVisualizer] = useState('json');
+
+    function Visualizer() {
+        switch (visualizer) {
+            case 'table':
+                return <TableVisualizer data={data} />;
+            default:
+                return <JsonVisualizer data={data} />;
+        }
+    }
+
+    return <div>
+        <ButtonGroup size="sm">
+            <Button active={visualizer === 'json'} onClick={() => setVisualizer('json')}>JSON</Button>
+            <Button active={visualizer === 'table'} onClick={() => setVisualizer('table')}>Table</Button>
+        </ButtonGroup>
+
+        <Visualizer />
+    </div>
 }
